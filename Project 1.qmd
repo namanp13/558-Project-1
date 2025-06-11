@@ -1,0 +1,49 @@
+---
+title: "Project 1"
+format: pdf
+editor: visual
+---
+
+## Define libraries needed
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyr)
+```
+
+
+## Data Processing
+
+### First steps: Read in the data
+
+```{r}
+census_data <- read_csv("EDU01a.csv")
+```
+
+### Question 1: Select only the columns: Area_name, STCOU, and any coulumn that ends in "D". Only display the first 5 rows
+
+```{r}
+census_data_2 <- census_data |>
+  select(area_name = Area_name, STCOU, ends_with("D"))
+
+head(census_data_2, 5)
+```
+
+### Question 2: Convert out data into long format where each row has only one enrollment value for that Area_name. 
+
+```{r}
+census_data_3 <- census_data_2 |>
+  pivot_longer(cols = ends_with("D"), names_to = "code_year",
+  values_to = "enroll"
+  )
+
+head(census_data_3, 5)
+```
+
+
+
+
+
+
+
