@@ -25,7 +25,8 @@ census_data <- read_csv("EDU01a.csv")
 
 ```{r}
 census_data_2 <- census_data |>
-  select(area_name = Area_name, STCOU, ends_with("D"))
+  select(Area_name, STCOU, ends_with("D")) |>
+  rename(area_name = Area_name)
 
 head(census_data_2, 5)
 ```
@@ -35,11 +36,43 @@ head(census_data_2, 5)
 ```{r}
 census_data_3 <- census_data_2 |>
   pivot_longer(cols = ends_with("D"), names_to = "code_year",
-  values_to = "enroll"
+  values_to = "total_enrolled"
   )
 
 head(census_data_3, 5)
 ```
+
+### Question 3: Parse the string to pull out the year and convert the year into a numeric value. Grab the first three characters and following four digits to create a new variable representing which measurement was grabbed.
+
+```{r}
+long_updated <- census_data_3 |>
+  mutate(year = 1900 + as.numeric(substr(code_year, 8, 9)),
+         new_measure = substr(code_year, 1, 7))
+
+head(long_updated, 5)
+```
+
+### Question 4: Create two data sets: one containing only non-count data, one containing only county level data
+
+```{r}
+split_data <- grep(pattern = ", \\w\\w", long_updated$area_name)
+
+county_tibble <- long_updated |>
+  slice(split_data)
+class(county_tibble) <- c("county", class(county_tibble))
+
+state_tibble <- long_updated |>
+  slice(-split_data)
+class(state_tibble) <- c("state", class(state_tibble))
+
+head(county_tibble, 10)
+head(state_tibble, 10)
+```
+
+
+
+
+
 
 
 
