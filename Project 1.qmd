@@ -69,7 +69,34 @@ head(county_tibble, 10)
 head(state_tibble, 10)
 ```
 
+### Question 5: Creating a new variable for the county level tibble that describes which state one of the county measurements corresponds to
 
+```{r}
+new_county_tibble <- county_tibble |>
+  mutate(State = substr(area_name, start = nchar(area_name) -1 ,
+                        stop = nchar(area_name)))
+
+head(new_county_tibble, 5)
+```
+
+### Question 6: Creating a new variable called "divison" for the non-county tibble that corresponds to the state's classification of division
+
+```{r}
+noncounty_tibble_new <- state_tibble |>
+  mutate(division = case_when (
+    area_name %in% c("CONNECTICUT", "MAINE", "MASSACHUSETTS", "NEW HAMPSHIRE", "RHODE ISLAND", "VERMONT") ~ "New England",
+      area_name %in% c("NEW JERSEY", "NEW YORK", "PENNSYLVANIA") ~ "Mid-Atlantic",
+      area_name %in% c("ILLINOIS", "INDIANA", "MICHIGAN", "OHIO", "WISCONSIN") ~ "East North Central",
+      area_name %in% c("IOWA", "KANSAS", "MINNESOTA", "MISSOURI", "NEBRASKA", "NORTH DAKOTA", "SOUTH DAKOTA") ~ "West North Central",
+      area_name %in% c("DELAWARE", "FLORIDA", "GEORGIA", "MARYLAND", "NORTH CAROLINA", "SOUTH CAROLINA", "VIRGINIA", "WEST VIRGINIA", "DISTRICT OF COLUMBIA") ~ "South Atlantic",
+      area_name %in% c("ALABAMA", "KENTUCKY", "MISSISSIPPI", "TENNESSEE") ~ "East South Central",
+      area_name %in% c("ARKANSAS", "LOUISIANA", "OKLAHOMA", "TEXAS") ~ "West South Central",
+      area_name %in% c("ARIZONA", "COLORADO", "IDAHO", "MONTANA", "NEVADA", "NEW MEXICO", "UTAH", "WYOMING") ~ "Mountain",
+      area_name %in% c("ALASKA", "CALIFORNIA", "HAWAII", "OREGON", "WASHINGTON") ~ "Pacific",
+      TRUE ~ "ERROR"))
+
+head(noncounty_tibble_new, 5)
+```
 
 
 
