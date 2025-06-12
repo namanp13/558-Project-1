@@ -105,7 +105,6 @@ head(noncounty_tibble_new, 5)
 census_data_b <- read_csv("EDU01b.csv")
 ```
 
-
 ### Function 1: Steps 1 and 2
 
 ```{r}
@@ -125,5 +124,18 @@ func_1 <- function(df, value_name = "students_enrolled") {
     )
 }
 
+census_data_b_1 <- func_1(census_data_b) # Checking my work
+```
+
+### Function 2: Step 3
+
+```{r}
+func_2 <- function(df_long){
+  long_updated_b <- df_long |>
+    mutate(year = 1900 + as.numeric(substr(code_year, 8, 9)),
+         new_measure = substr(code_year, 1, 7))
+}
+
+census_data_b_2 <- func_2(census_data_b_1) # Checking my work
 ```
 
