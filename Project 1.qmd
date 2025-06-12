@@ -110,7 +110,7 @@ census_data_b <- read_csv("EDU01b.csv")
 
 ```{r}
 
-func_1 <- function(df, value_name = "students enrolled") {
+func_1 <- function(df, value_name = "students_enrolled") {
   df_1 <- df |>
     select(
       area_name = Area_name,
@@ -121,7 +121,7 @@ func_1 <- function(df, value_name = "students enrolled") {
     pivot_longer(
       cols = ends_with("D"),
       names_to = "code_year",
-      value_to = "total_enrolled"
+      values_to = "total_enrolled"
     )
 }
 
