@@ -122,20 +122,96 @@ func_1 <- function(df, value_name = "students_enrolled") {
       names_to = "code_year",
       values_to = "total_enrolled"
     )
+  return(df_long)
 }
 
-census_data_b_1 <- func_1(census_data_b) # Checking my work
 ```
 
 ### Function 2: Step 3
 
 ```{r}
 func_2 <- function(df_long){
-  long_updated_b <- df_long |>
+  long_updated <- df_long |>
     mutate(year = 1900 + as.numeric(substr(code_year, 8, 9)),
          new_measure = substr(code_year, 1, 7))
+  return(long_updated)
 }
 
-census_data_b_2 <- func_2(census_data_b_1) # Checking my work
+```
+
+### Function 3: Step 5
+```{r}
+
+func_3 <- function(county_tibble){
+  county_tibble |>
+    mutate(State = substr(area_name, start = nchar(area_name) -1 ,
+                        stop = nchar(area_name)))
+}
+
+```
+
+### Function 4: Step 6
+```{r}
+
+func_4 <- function(state_tibble){
+   state_tibble |>
+    mutate(division = case_when (
+    area_name %in% c("CONNECTICUT", "MAINE", "MASSACHUSETTS", "NEW HAMPSHIRE", "RHODE ISLAND", "VERMONT") ~ "New England",
+      area_name %in% c("NEW JERSEY", "NEW YORK", "PENNSYLVANIA") ~ "Mid-Atlantic",
+      area_name %in% c("ILLINOIS", "INDIANA", "MICHIGAN", "OHIO", "WISCONSIN") ~ "East North Central",
+      area_name %in% c("IOWA", "KANSAS", "MINNESOTA", "MISSOURI", "NEBRASKA", "NORTH DAKOTA", "SOUTH DAKOTA") ~ "West North Central",
+      area_name %in% c("DELAWARE", "FLORIDA", "GEORGIA", "MARYLAND", "NORTH CAROLINA", "SOUTH CAROLINA", "VIRGINIA", "WEST VIRGINIA", "DISTRICT OF COLUMBIA") ~ "South Atlantic",
+      area_name %in% c("ALABAMA", "KENTUCKY", "MISSISSIPPI", "TENNESSEE") ~ "East South Central",
+      area_name %in% c("ARKANSAS", "LOUISIANA", "OKLAHOMA", "TEXAS") ~ "West South Central",
+      area_name %in% c("ARIZONA", "COLORADO", "IDAHO", "MONTANA", "NEVADA", "NEW MEXICO", "UTAH", "WYOMING") ~ "Mountain",
+      area_name %in% c("ALASKA", "CALIFORNIA", "HAWAII", "OREGON", "WASHINGTON") ~ "Pacific",
+      TRUE ~ "ERROR"))
+}
+  
+```
+
+### Function 5
+```{r}
+
+func_5 <- function(long_updated){
+  split_data <- grep(pattern = ", \\w\\w", long_updated$area_name)
+  
+  county_tibble <- long_updated |>
+  slice(split_data) |>
+    func_3() 
+class(county_tibble) <- c("county", class(county_tibble))
+  
+state_tibble <- long_updated |>
+  slice(-split_data) |>
+  func_4() 
+class(state_tibble) <- c("state", class(state_tibble))  
+
+return(list(county_tibble, state_tibble))
+}
+```
+
+### Wrapper Function
+
+```{r}
+my_wrapper <- function(url, default_var_name = "students_enrolled"){
+df <-  read_csv(url)
+
+df_long <- func_1(df) 
+
+long_updated <- func_2(df_long) 
+
+result <- func_5(long_updated)
+
+return(result)
+}
+
+```
+
+### Use wrapper function for both data files
+
+```{r}
+my_wrapper("EDU01a.csv")
+
+my_wrapper("EDU01b.csv")
 ```
 
