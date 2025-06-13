@@ -229,3 +229,6 @@ return(list(county = combined_county, state = combined_state))
 combine_function(census_a, census_b)
 ```
 
+## Writing a Generic Function for Summarizing
+
+
