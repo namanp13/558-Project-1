@@ -210,8 +210,22 @@ return(result)
 ### Use wrapper function for both data files
 
 ```{r}
-my_wrapper("EDU01a.csv")
+census_a <- my_wrapper("EDU01a.csv")
 
-my_wrapper("EDU01b.csv")
+census_b <- my_wrapper("EDU01b.csv")
+```
+
+### Function to combine tibbles
+```{r}
+combine_function <- function(wrapper_a, wrapper_b){
+  
+  combined_county <- bind_rows(wrapper_a[[1]], wrapper_b[[1]])
+  
+  combined_state <- bind_rows(wrapper_a[[2]], wrapper_b[[2]])
+
+return(list(county = combined_county, state = combined_state))
+}
+
+combine_function(census_a, census_b)
 ```
 
