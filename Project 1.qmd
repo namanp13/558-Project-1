@@ -241,7 +241,7 @@ plot.state <- function(df, var_name = "total_enrolled") {
     group_by(division, year) |>
     summarize(mean_stat = mean(get(var_name), na.rm = TRUE))
   ggplot(mean_df, aes(x = year, y = mean_stat, color = division)) +
-    geom_line() + geom_point() + labs(title = "Mean of Enrollment by Division")}
+    geom_line() + geom_point() + labs(title = "Mean of Enrollment by Division (Non-County)")}
 ```
 
 #Generic function for the county tibble
@@ -255,6 +255,22 @@ plot.county <- function(df, var_name = "total_enrolled", state_of_interest = "NC
   county_mean <- df_state |>
     group_by(area_name) |>
     summarize(mean_val = mean(get(var_name), na.rm = TRUE))
+  
+  if(top_bottom == "top") {
+    select_county <- county_mean |>
+      arrange(desc(mean_val)) |>
+      head(num_top_bottom) |>
+      pull(area_name)
+  } else if (top_bottom == "bottom") {
+    select_county <- county_mean |>
+      arrange(mean_val) |>
+      head(num_top_bottom) |>
+      pull(area_name)
+  }
+  plotting_data <- df_state |>
+    filter(area_name %in% select_county)
+  
+  ggplot(plotting_data, aes(x = year, y = get(var_name), color = area_name)) + geom_line() + geom_point() + labs(title = "Enrollment Over Time")
 }
 ```
 
