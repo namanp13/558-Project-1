@@ -10,6 +10,7 @@ editor: visual
 library(readr)
 library(dplyr)
 library(tidyr)
+library(ggplot2)
 ```
 
 ## Data Processing
@@ -230,5 +231,37 @@ combine_function(census_a, census_b)
 ```
 
 ## Writing a Generic Function for Summarizing
+
+```{r}
+plot.state <- function(df, var_name = "total_enrolled") {
+  new_df <- df |>
+    filter(division != "ERROR")
+
+  mean_df <- new_df |>
+    group_by(division, year) |>
+    summarize(mean_stat = mean(get(var_name), na.rm = TRUE))
+  ggplot(mean_df, aes(x = year, y = mean_stat, color = division)) +
+    geom_line() + geom_point() + labs(title = "Mean of Enrollment by Division")}
+```
+
+#Generic function for the county tibble
+
+```{r}
+plot.county <- function(df, var_name = "total_enrolled", state_of_interest = "NC", top_bottom = "top", num_top_bottom = 5) {
+  
+  df_state <- df |>
+    filter(State == state_of_interest)
+  
+  county_mean <- df_state |>
+    group_by(area_name) |>
+    summarize(mean_val = mean(get(var_name), na.rm = TRUE))
+}
+```
+
+
+
+
+
+
 
 
