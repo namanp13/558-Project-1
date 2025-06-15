@@ -244,7 +244,7 @@ plot.state <- function(df, var_name = "total_enrolled") {
     geom_line() + geom_point() + labs(title = "Mean of Enrollment by Division (Non-County)")}
 ```
 
-#Generic function for the county tibble
+## Generic function for the county tibble
 
 ```{r}
 plot.county <- function(df, var_name = "total_enrolled", state_of_interest = "NC", top_bottom = "top", num_top_bottom = 5) {
@@ -270,14 +270,108 @@ plot.county <- function(df, var_name = "total_enrolled", state_of_interest = "NC
   plotting_data <- df_state |>
     filter(area_name %in% select_county)
   
-  ggplot(plotting_data, aes(x = year, y = get(var_name), color = area_name)) + geom_line() + geom_point() + labs(title = "Enrollment Over Time")
+  ggplot(plotting_data, aes(x = year, y = .data[[var_name]], color = area_name)) + geom_line() + geom_point() + labs(title = "Enrollment Over Time")
 }
 ```
 
+## Put It Together
 
+### Run your data processing function on the two enrollment URLs given previously, specifying an appropriate name for the enrollment data column.
 
+```{r}
 
+census_a <- my_wrapper("EDU01a.csv")
 
+census_b <- my_wrapper("EDU01b.csv")
 
+```
+### Run your data combining function to put these into one object (with two data frames)
+```{r}
+combine_function(census_a, census_b)[[1]]
+
+combine_function(census_a, census_b)[[2]]
+
+```
+### Use the plot function on the state data frame
+```{r}
+
+plot.state(combine_function(census_a, census_b)[[2]])
+
+```
+### Use the plot function on the county data frame
+
+#### Once specifying the state to be “NC”, the group being the top, the number looked at being 20
+
+```{r}
+plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 20)
+
+```
+#### Once specifying the state to be “SC”, the group being the bottom, the number looked at being 7
+```{r}
+
+plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 7, state_of_interest = "SC", top_bottom = "bottom")
+
+```
+#### Once without specifying anything (defaults used)
+```{r}
+plot.county(combine_function(census_a, census_b)[[1]])
+```
+#### Once specifying the state to be “PA”, the group being the top, the number looked at being 8
+```{r}
+
+plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 8, state_of_interest = "PA")
+
+```
+### Applying Features to New Data Sets
+
+#### Run your data processing function on the four data sets at URLs given below:
+
+```{r}
+
+PST_data_a <- my_wrapper("PST01a.csv")
+
+PST_data_b <- my_wrapper("PST01b.csv")
+
+PST_data_c <- my_wrapper("PST01c.csv")
+
+PST_data_d <- my_wrapper("PST01d.csv")
+
+```
+#### Run your data combining function (probably three times) to put these into one object (with two data frames)
+```{r}
+PST_data_ab <- combine_function(PST_data_a, PST_data_b)
+
+PST_data_abc <- combine_function(PST_data_ab, PST_data_c)
+
+PST_data_abcd <- combine_function(PST_data_abc, PST_data_d)
+```
+
+#### Use the plot function on the state data frame
+
+```{r}
+
+plot.state(PST_data_abcd[[2]])
+
+```
+#### Use the plot function on the county data frame
+
+##### Once specifying the state to be “CA”, the group being the top, the number looked at being 15
+```{r}
+plot.county(PST_data_abcd[[1]], state_of_interest = "CA", num_top_bottom = 15)
+```
+##### Once specifying the state to be “TX”, the group being the top, the number looked at being 4
+```{r}
+plot.county(PST_data_abcd[[1]], state_of_interest = "TX", num_top_bottom = 4)
+```
+##### Once without specifying anything (defaults used)
+```{r}
+plot.county(PST_data_abcd[[1]])
+```
+##### Once specifying the state to be “NY”, the group being the top, the number looked at being 10
+```{r}
+
+plot.county(PST_data_abcd[[1]], state_of_interest = "NY", num_top_bottom = 10)
+
+```
 
 
