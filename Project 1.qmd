@@ -6,7 +6,7 @@ editor: visual
 
 ## Define libraries needed
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -17,7 +17,7 @@ library(ggplot2)
 
 ### First steps: Read in the data
 
-```{r}
+```{r, message = FALSE}
 census_data <- read_csv("EDU01a.csv")
 ```
 
@@ -84,15 +84,28 @@ head(new_county_tibble, 5)
 ```{r}
 noncounty_tibble_new <- state_tibble |>
   mutate(division = case_when (
-    area_name %in% c("CONNECTICUT", "MAINE", "MASSACHUSETTS", "NEW HAMPSHIRE", "RHODE ISLAND", "VERMONT") ~ "New England",
-      area_name %in% c("NEW JERSEY", "NEW YORK", "PENNSYLVANIA") ~ "Mid-Atlantic",
-      area_name %in% c("ILLINOIS", "INDIANA", "MICHIGAN", "OHIO", "WISCONSIN") ~ "East North Central",
-      area_name %in% c("IOWA", "KANSAS", "MINNESOTA", "MISSOURI", "NEBRASKA", "NORTH DAKOTA", "SOUTH DAKOTA") ~ "West North Central",
-      area_name %in% c("DELAWARE", "FLORIDA", "GEORGIA", "MARYLAND", "NORTH CAROLINA", "SOUTH CAROLINA", "VIRGINIA", "WEST VIRGINIA", "DISTRICT OF COLUMBIA") ~ "South Atlantic",
-      area_name %in% c("ALABAMA", "KENTUCKY", "MISSISSIPPI", "TENNESSEE") ~ "East South Central",
-      area_name %in% c("ARKANSAS", "LOUISIANA", "OKLAHOMA", "TEXAS") ~ "West South Central",
-      area_name %in% c("ARIZONA", "COLORADO", "IDAHO", "MONTANA", "NEVADA", "NEW MEXICO", "UTAH", "WYOMING") ~ "Mountain",
-      area_name %in% c("ALASKA", "CALIFORNIA", "HAWAII", "OREGON", "WASHINGTON") ~ "Pacific",
+    area_name %in% c("CONNECTICUT", "MAINE", "MASSACHUSETTS", 
+                     "NEW HAMPSHIRE", "RHODE ISLAND", "VERMONT")
+    ~ "New England",
+      area_name %in% c("NEW JERSEY", "NEW YORK", "PENNSYLVANIA")
+    ~ "Mid-Atlantic",
+      area_name %in% c("ILLINOIS", "INDIANA", "MICHIGAN", "OHIO", 
+                       "WISCONSIN") ~ "East North Central",
+      area_name %in% c("IOWA", "KANSAS", "MINNESOTA", "MISSOURI", 
+                       "NEBRASKA", "NORTH DAKOTA", "SOUTH DAKOTA") 
+    ~ "West North Central",
+      area_name %in% c("DELAWARE", "FLORIDA", "GEORGIA", "MARYLAND", 
+                       "NORTH CAROLINA", "SOUTH CAROLINA", "VIRGINIA", 
+                       "WEST VIRGINIA", "DISTRICT OF COLUMBIA") 
+    ~ "South Atlantic",
+      area_name %in% c("ALABAMA", "KENTUCKY", "MISSISSIPPI",
+                       "TENNESSEE") ~ "East South Central",
+      area_name %in% c("ARKANSAS", "LOUISIANA", "OKLAHOMA", "TEXAS") 
+    ~ "West South Central",
+      area_name %in% c("ARIZONA", "COLORADO", "IDAHO", "MONTANA", 
+                       "NEVADA", "NEW MEXICO", "UTAH", "WYOMING") ~ "Mountain",
+      area_name %in% c("ALASKA", "CALIFORNIA", "HAWAII", "OREGON", "WASHINGTON")
+    ~ "Pacific",
       TRUE ~ "ERROR"))
 
 head(noncounty_tibble_new, 5)
@@ -102,7 +115,7 @@ head(noncounty_tibble_new, 5)
 
 ### Reading in data
 
-```{r}
+```{r, message= FALSE}
 census_data_b <- read_csv("EDU01b.csv")
 ```
 
@@ -157,15 +170,26 @@ func_3 <- function(county_tibble){
 func_4 <- function(state_tibble){
    state_tibble |>
     mutate(division = case_when (
-    area_name %in% c("CONNECTICUT", "MAINE", "MASSACHUSETTS", "NEW HAMPSHIRE", "RHODE ISLAND", "VERMONT") ~ "New England",
-      area_name %in% c("NEW JERSEY", "NEW YORK", "PENNSYLVANIA") ~ "Mid-Atlantic",
-      area_name %in% c("ILLINOIS", "INDIANA", "MICHIGAN", "OHIO", "WISCONSIN") ~ "East North Central",
-      area_name %in% c("IOWA", "KANSAS", "MINNESOTA", "MISSOURI", "NEBRASKA", "NORTH DAKOTA", "SOUTH DAKOTA") ~ "West North Central",
-      area_name %in% c("DELAWARE", "FLORIDA", "GEORGIA", "MARYLAND", "NORTH CAROLINA", "SOUTH CAROLINA", "VIRGINIA", "WEST VIRGINIA", "DISTRICT OF COLUMBIA") ~ "South Atlantic",
-      area_name %in% c("ALABAMA", "KENTUCKY", "MISSISSIPPI", "TENNESSEE") ~ "East South Central",
-      area_name %in% c("ARKANSAS", "LOUISIANA", "OKLAHOMA", "TEXAS") ~ "West South Central",
-      area_name %in% c("ARIZONA", "COLORADO", "IDAHO", "MONTANA", "NEVADA", "NEW MEXICO", "UTAH", "WYOMING") ~ "Mountain",
-      area_name %in% c("ALASKA", "CALIFORNIA", "HAWAII", "OREGON", "WASHINGTON") ~ "Pacific",
+    area_name %in% c("CONNECTICUT", "MAINE", "MASSACHUSETTS", "NEW HAMPSHIRE", 
+                     "RHODE ISLAND", "VERMONT") ~ "New England",
+      area_name %in% c("NEW JERSEY", "NEW YORK", "PENNSYLVANIA") ~ 
+      "Mid-Atlantic",
+      area_name %in% c("ILLINOIS", "INDIANA", "MICHIGAN", "OHIO", "WISCONSIN")
+      ~"East North Central",
+      area_name %in% c("IOWA", "KANSAS", "MINNESOTA", "MISSOURI", "NEBRASKA", 
+                       "NORTH DAKOTA", "SOUTH DAKOTA") ~ "West North Central",
+      area_name %in% c("DELAWARE", "FLORIDA", "GEORGIA", "MARYLAND", 
+                       "NORTH CAROLINA", "SOUTH CAROLINA", "VIRGINIA", 
+                       "WEST VIRGINIA", "DISTRICT OF COLUMBIA") 
+      ~ "South Atlantic",
+      area_name %in% c("ALABAMA", "KENTUCKY", "MISSISSIPPI", "TENNESSEE") 
+      ~ "East South Central",
+      area_name %in% c("ARKANSAS", "LOUISIANA", "OKLAHOMA", "TEXAS")
+      ~ "West South Central",
+      area_name %in% c("ARIZONA", "COLORADO", "IDAHO", "MONTANA", "NEVADA", 
+                       "NEW MEXICO", "UTAH", "WYOMING") ~ "Mountain",
+      area_name %in% c("ALASKA", "CALIFORNIA", "HAWAII", "OREGON", "WASHINGTON") 
+      ~ "Pacific",
       TRUE ~ "ERROR"))
 }
   
@@ -210,7 +234,7 @@ return(result)
 
 ### Use wrapper function for both data files
 
-```{r}
+```{r, message=FALSE}
 census_a <- my_wrapper("EDU01a.csv")
 
 census_b <- my_wrapper("EDU01b.csv")
@@ -241,13 +265,15 @@ plot.state <- function(df, var_name = "total_enrolled") {
     group_by(division, year) |>
     summarize(mean_stat = mean(get(var_name), na.rm = TRUE))
   ggplot(mean_df, aes(x = year, y = mean_stat, color = division)) +
-    geom_line() + geom_point() + labs(title = "Mean of Enrollment by Division (Non-County)")}
+    geom_line() + geom_point() + 
+    labs(title = "Mean of Enrollment by Division (Non-County)")}
 ```
 
 ## Generic function for the county tibble
 
 ```{r}
-plot.county <- function(df, var_name = "total_enrolled", state_of_interest = "NC", top_bottom = "top", num_top_bottom = 5) {
+plot.county <- function(df, var_name = "total_enrolled", 
+            state_of_interest = "NC", top_bottom = "top", num_top_bottom = 5) {
   
   df_state <- df |>
     filter(State == state_of_interest)
@@ -270,7 +296,9 @@ plot.county <- function(df, var_name = "total_enrolled", state_of_interest = "NC
   plotting_data <- df_state |>
     filter(area_name %in% select_county)
   
-  ggplot(plotting_data, aes(x = year, y = .data[[var_name]], color = area_name)) + geom_line() + geom_point() + labs(title = "Enrollment Over Time")
+  ggplot(plotting_data, aes(x = year, y = .data[[var_name]], 
+                            color = area_name)) + geom_line() + geom_point() + 
+    labs(title = "Enrollment Over Time")
 }
 ```
 
@@ -278,7 +306,7 @@ plot.county <- function(df, var_name = "total_enrolled", state_of_interest = "NC
 
 ### Run your data processing function on the two enrollment URLs given previously, specifying an appropriate name for the enrollment data column.
 
-```{r}
+```{r, message = FALSE}
 
 census_a <- my_wrapper("EDU01a.csv")
 
@@ -293,7 +321,7 @@ combine_function(census_a, census_b)[[2]]
 
 ```
 ### Use the plot function on the state data frame
-```{r}
+```{r, message=FALSE}
 
 plot.state(combine_function(census_a, census_b)[[2]])
 
@@ -309,7 +337,8 @@ plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 20)
 #### Once specifying the state to be “SC”, the group being the bottom, the number looked at being 7
 ```{r}
 
-plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 7, state_of_interest = "SC", top_bottom = "bottom")
+plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 7, 
+            state_of_interest = "SC", top_bottom = "bottom")
 
 ```
 #### Once without specifying anything (defaults used)
@@ -319,14 +348,15 @@ plot.county(combine_function(census_a, census_b)[[1]])
 #### Once specifying the state to be “PA”, the group being the top, the number looked at being 8
 ```{r}
 
-plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 8, state_of_interest = "PA")
+plot.county(combine_function(census_a, census_b)[[1]], num_top_bottom = 8, 
+            state_of_interest = "PA")
 
 ```
 ### Applying Features to New Data Sets
 
 #### Run your data processing function on the four data sets at URLs given below:
 
-```{r}
+```{r, message = FALSE}
 
 PST_data_a <- my_wrapper("PST01a.csv")
 
@@ -348,7 +378,7 @@ PST_data_abcd <- combine_function(PST_data_abc, PST_data_d)
 
 #### Use the plot function on the state data frame
 
-```{r}
+```{r, message = FALSE}
 
 plot.state(PST_data_abcd[[2]])
 
