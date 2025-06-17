@@ -21,7 +21,7 @@ library(ggplot2)
 census_data <- read_csv("EDU01a.csv")
 ```
 
-### Question 1: Select only the columns: Area_name, STCOU, and any coulumn that ends in "D". Only display the first 5 rows
+### Question 1: Select only the columns: Area_name, STCOU, and any column that ends in "D". Only display the first 5 rows
 
 ```{r}
 census_data_2 <- census_data |>
