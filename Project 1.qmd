@@ -254,7 +254,10 @@ return(list(county = combined_county, state = combined_state))
 combine_function(census_a, census_b)
 ```
 
-## Writing a Generic Function for Summarizing
+
+## Summarizing Functions
+
+### Writing a Generic Function for Summarizing non county tibble
 
 ```{r}
 plot.state <- function(df, var_name = "total_enrolled") {
@@ -269,7 +272,7 @@ plot.state <- function(df, var_name = "total_enrolled") {
     labs(title = "Mean of Enrollment by Division (Non-County)")}
 ```
 
-## Generic function for the county tibble
+### Generic function for the county tibble
 
 ```{r}
 plot.county <- function(df, var_name = "total_enrolled", 
